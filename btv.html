@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<title>Bình luận</title>
+
+<style>
+body{
+  background:#000;
+  color:white;
+  text-align:center;
+}
+
+textarea{
+  width:80%;
+  height:100px;
+}
+
+#comments{
+  margin-top:20px;
+}
+</style>
+</head>
+
+<body>
+
+<h2>Bình luận & FDT</h2>
+
+<textarea id="input"></textarea><br><br>
+
+<button onclick="addComment()">Gửi</button>
+
+<div id="comments"></div>
+
+<script>
+// Load bình luận
+function loadComments(){
+  let data = JSON.parse(localStorage.getItem('comments') || '[]');
+  data.forEach(val => renderComment(val));
+}
+
+// Hiển thị
+function renderComment(val){
+  let div = document.createElement('div');
+  div.innerHTML = val;
+  document.getElementById('comments').appendChild(div);
+}
+
+// Thêm bình luận
+function addComment(){
+  let input = document.getElementById('input');
+  let val = input.value;
+
+  if(!val.trim()) return;
+
+  let data = JSON.parse(localStorage.getItem('comments') || '[]');
+  data.push(val);
+
+  localStorage.setItem('comments', JSON.stringify(data));
+
+  renderComment(val);
+  input.value = "";
+}
+
+// chạy khi mở trang
+loadComments();
+</script>
+
+<h3>BDT - Thông báo</h3>
+<p>Trang đang cập nhật...</p>
+
+</body>
+</html>
