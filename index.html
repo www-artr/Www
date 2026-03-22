@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Trang chính dễ thương</title>
+
+<style>
+body {
+  font-family: Arial;
+  background: linear-gradient(135deg, #ffd6e0, #d6f0ff);
+  text-align: center;
+  margin: 0;
+}
+
+.container {
+  max-width: 800px;
+  margin: auto;
+  padding: 20px;
+}
+
+h1 {
+  animation: float 2s infinite alternate;
+}
+
+@keyframes float {
+  from { transform: translateY(0px); }
+  to { transform: translateY(-10px); }
+}
+
+textarea {
+  width: 100%;
+  height: 120px;
+  border-radius: 10px;
+  border: none;
+  padding: 10px;
+}
+
+button {
+  padding: 10px 20px;
+  border: none;
+  border-radius: 20px;
+  background: #ff9aa2;
+  color: white;
+  margin: 5px;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+button:hover {
+  background: #ff6f91;
+}
+
+.preview {
+  margin-top: 20px;
+  background: white;
+  padding: 10px;
+  border-radius: 15px;
+}
+
+a {
+  display: inline-block;
+  margin: 10px;
+  text-decoration: none;
+  color: #333;
+  font-weight: bold;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+  <h1>🌸 Trang chính</h1>
+
+  <a href="nhac.html">🎵 Nhạc</a>
+  <a href="bv.html">📖 Bài viết</a>
+
+  <h3>💗 Dán code nhạc vào đây</h3>
+
+  <textarea id="musicCode" placeholder="Paste code nhạc..."></textarea><br>
+
+  <button onclick="showMusic()">Hiển thị 🎧</button>
+
+  <div class="preview" id="preview"></div>
+
+  <h3>⬇ Download</h3>
+  <button onclick="downloadMusic()">Tải nhạc</button>
+</div>
+
+<script>
+function showMusic() {
+  let code = document.getElementById("musicCode").value;
+  document.getElementById("preview").innerHTML = code;
+}
+
+function downloadMusic() {
+  let code = document.getElementById("musicCode").value;
+  let match = code.match(/src="(.*?)"/);
+
+  if(match) {
+    let a = document.createElement("a");
+    a.href = match[1];
+    a.download = "music.mp3";
+    a.click();
+  } else {
+    alert("Không tìm thấy link nhạc 😢");
+  }
+}
+</script>
+
+</body>
+  </html>
