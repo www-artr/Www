@@ -2,12 +2,12 @@
 <html>
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Nhạc cute</title>
+<title>Quản lý nhạc</title>
 
 <style>
 body {
   font-family: Arial;
-  background: #fff0f5;
+  background: #e0f7fa;
   text-align: center;
 }
 
@@ -15,28 +15,28 @@ body {
   padding: 20px;
 }
 
+input {
+  padding: 10px;
+  width: 80%;
+  border-radius: 10px;
+  border: none;
+}
+
+button {
+  padding: 10px 20px;
+  border-radius: 20px;
+  border: none;
+  background: #00bcd4;
+  color: white;
+  margin: 10px;
+  cursor: pointer;
+}
+
 .card {
   background: white;
-  border-radius: 20px;
-  padding: 20px;
-  display: inline-block;
-  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-  animation: fade 1s;
-}
-
-@keyframes fade {
-  from {opacity: 0;}
-  to {opacity: 1;}
-}
-
-audio {
-  width: 100%;
-  max-width: 300px;
-}
-
-a {
-  display: block;
-  margin-top: 20px;
+  margin: 10px;
+  padding: 15px;
+  border-radius: 15px;
 }
 </style>
 </head>
@@ -44,17 +44,64 @@ a {
 <body>
 
 <div class="container">
-  <h1>🎶 Nhạc của bạn</h1>
+  <h1>🎶 Thêm nhạc + tạo code</h1>
 
-  <div class="card">
-    <p>💖 Bài nhạc</p>
-    <audio controls>
-      <source src="your-music.mp3" type="audio/mpeg">
-    </audio>
-  </div>
+  <input id="linkInput" placeholder="Dán link .mp3">
+  <br>
+  <button onclick="addMusic()">Thêm nhạc</button>
+
+  <div id="list"></div>
 
   <a href="index.html">⬅ Quay lại</a>
 </div>
+
+<script>
+let list = JSON.parse(localStorage.getItem("musicList")) || [];
+
+function randomCode() {
+  let chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+  let code = "";
+  for (let i = 0; i < 8; i++) {
+    code += chars[Math.floor(Math.random() * chars.length)];
+  }
+  return code;
+}
+
+function addMusic() {
+  let link = document.getElementById("linkInput").value;
+
+  if (!link.includes(".mp3")) {
+    alert("❌ Phải là link .mp3!");
+    return;
+  }
+
+  let code = randomCode();
+
+  list.push({ link, code });
+
+  localStorage.setItem("musicList", JSON.stringify(list));
+
+  render();
+}
+
+function render() {
+  let html = "";
+
+  list.forEach((m, i) => {
+    html += `
+      <div class="card">
+        🎵 Bài ${i+1}<br>
+        <audio controls src="${m.link}"></audio><br>
+        🔑 Code: <b>${m.code}</b>
+      </div>
+    `;
+  });
+
+  document.getElementById("list").innerHTML = html;
+}
+
+render();
+</script>
 
 </body>
 </html>
