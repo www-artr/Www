@@ -2,67 +2,40 @@
 <html>
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Trang chính dễ thương</title>
+<title>Tải nhạc bằng code</title>
 
 <style>
 body {
   font-family: Arial;
-  background: linear-gradient(135deg, #ffd6e0, #d6f0ff);
+  background: #ffe4ec;
   text-align: center;
-  margin: 0;
 }
 
 .container {
-  max-width: 800px;
+  max-width: 600px;
   margin: auto;
   padding: 20px;
 }
 
-h1 {
-  animation: float 2s infinite alternate;
-}
-
-@keyframes float {
-  from { transform: translateY(0px); }
-  to { transform: translateY(-10px); }
-}
-
-textarea {
-  width: 100%;
-  height: 120px;
+input {
+  padding: 10px;
+  width: 80%;
   border-radius: 10px;
   border: none;
-  padding: 10px;
 }
 
 button {
   padding: 10px 20px;
-  border: none;
   border-radius: 20px;
-  background: #ff9aa2;
-  color: white;
-  margin: 5px;
-  cursor: pointer;
-  transition: 0.3s;
-}
-
-button:hover {
+  border: none;
   background: #ff6f91;
+  color: white;
+  margin-top: 10px;
+  cursor: pointer;
 }
 
-.preview {
+.result {
   margin-top: 20px;
-  background: white;
-  padding: 10px;
-  border-radius: 15px;
-}
-
-a {
-  display: inline-block;
-  margin: 10px;
-  text-decoration: none;
-  color: #333;
-  font-weight: bold;
 }
 </style>
 </head>
@@ -70,43 +43,46 @@ a {
 <body>
 
 <div class="container">
-  <h1>🌸 Trang chính</h1>
+  <h1>🎵 Nhập code để tải nhạc</h1>
 
-  <a href="nhac.html">🎵 Nhạc</a>
-  <a href="bv.html">📖 Bài viết</a>
+  <a href="nhac.html">➡ Xem nhạc</a>
 
-  <h3>💗 Dán code nhạc vào đây</h3>
+  <br><br>
 
-  <textarea id="musicCode" placeholder="Paste code nhạc..."></textarea><br>
+  <input id="codeInput" placeholder="Nhập code (VD: GHtyP744)">
+  <br>
+  <button onclick="findMusic()">Tải nhạc ⬇</button>
 
-  <button onclick="showMusic()">Hiển thị 🎧</button>
-
-  <div class="preview" id="preview"></div>
-
-  <h3>⬇ Download</h3>
-  <button onclick="downloadMusic()">Tải nhạc</button>
+  <div class="result" id="result"></div>
 </div>
 
 <script>
-function showMusic() {
-  let code = document.getElementById("musicCode").value;
-  document.getElementById("preview").innerHTML = code;
+let list = JSON.parse(localStorage.getItem("musicList")) || [];
+
+function findMusic() {
+  let code = document.getElementById("codeInput").value;
+
+  let found = list.find(m => m.code === code);
+
+  if (!found) {
+    document.getElementById("result").innerHTML = "❌ Không tìm thấy nhạc";
+    return;
+  }
+
+  document.getElementById("result").innerHTML = `
+    🎧 Đã tìm thấy!<br>
+    <audio controls src="${found.link}"></audio><br>
+    <button onclick="download('${found.link}')">⬇ Tải</button>
+  `;
 }
 
-function downloadMusic() {
-  let code = document.getElementById("musicCode").value;
-  let match = code.match(/src="(.*?)"/);
-
-  if(match) {
-    let a = document.createElement("a");
-    a.href = match[1];
-    a.download = "music.mp3";
-    a.click();
-  } else {
-    alert("Không tìm thấy link nhạc 😢");
-  }
+function download(link) {
+  let a = document.createElement("a");
+  a.href = link;
+  a.download = "music.mp3";
+  a.click();
 }
 </script>
 
 </body>
-  </html>
+</html>
