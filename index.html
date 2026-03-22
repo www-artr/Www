@@ -1,154 +1,94 @@
 <!DOCTYPE html>
-<html>
+<html lang="vi">
 <head>
+<meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>🎧 xiaohongshu Music Player</title>
+<title>Trang chính</title>
 
 <style>
 body {
-  margin: 0;
+  margin:0;
   font-family: Arial;
-  text-align: center;
-  background: linear-gradient(135deg, #ffd6e0, #d6f0ff);
-  overflow: hidden;
+  background: linear-gradient(135deg,#0f2027,#203a43,#2c5364);
+  color:white;
+  text-align:center;
 }
 
-h1 {
-  color: #ff4d88;
-  margin-top: 20px;
+nav a{
+  margin:10px;
+  color:#00eaff;
+  text-decoration:none;
+  font-size:18px;
 }
 
-.container {
-  background: white;
-  padding: 20px;
-  border-radius: 20px;
-  width: 90%;
-  max-width: 400px;
-  margin: auto;
-  margin-top: 20px;
-  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+canvas{
+  position:fixed;
+  top:0;
+  left:0;
+  z-index:-1;
 }
 
-input {
-  width: 90%;
-  padding: 10px;
-  border-radius: 10px;
-  border: 1px solid #ccc;
-}
-
-button {
-  margin-top: 10px;
-  padding: 10px 15px;
-  border: none;
-  border-radius: 10px;
-  background: #ff6fa5;
-  color: white;
-  cursor: pointer;
-}
-
-button:hover {
-  background: #ff4d88;
-}
-
-iframe {
-  margin-top: 15px;
-  width: 100%;
-  height: 220px;
-  border-radius: 15px;
-  border: none;
-}
-
-/* Thông báo */
-#status {
-  color: red;
-  margin-top: 10px;
-  font-size: 14px;
-}
-
-/* Hạt bay */
-.particle {
-  position: absolute;
-  width: 10px;
-  height: 10px;
-  background: pink;
-  border-radius: 50%;
-  opacity: 0.7;
-  animation: float 10s linear infinite;
-}
-
-@keyframes float {
-  from { transform: translateY(100vh); }
-  to { transform: translateY(-10vh); }
+footer{
+  position:fixed;
+  bottom:0;
+  width:100%;
 }
 </style>
 </head>
 
 <body>
 
-<h1> xiaohongshu Music </h1>
+<canvas id="bg"></canvas>
 
-<div class="container">
-  <input type="text" id="link" placeholder="Dán link YouTube vào đây...">
-  <br>
+<h1>🌌 Trang lưu trữ cá nhân</h1>
 
-  <button onclick="playMusic()">▶ 打開 </button>
-  <button onclick="openYT()">🔗 打開 YouTube </button>
-  <button onclick="downloadMP3()">⬇ 下載 MP3 </button>
-
-  <p id="status"></p>
-
-  <iframe id="player"></iframe>
-</div>
+<nav>
+  <a href="anh.html">Ảnh</a>
+  <a href="video.html">Video</a>
+  <a href="btv.html">Bình luận</a>
+</nav>
 
 <script>
-let currentLink = "";
+const c=document.getElementById("bg");
+const ctx=c.getContext("2d");
 
-function playMusic() {
-  let url = document.getElementById("link").value;
-  currentLink = url;
+c.width=innerWidth;
+c.height=innerHeight;
 
-  let videoId = "";
+let particles=[];
 
-  if (url.includes("watch?v=")) {
-    videoId = url.split("watch?v=")[1].split("&")[0];
-  } else if (url.includes("youtu.be/")) {
-    videoId = url.split("youtu.be/")[1];
-  }
-
-  if (videoId !== "") {
-    document.getElementById("player").src =
-      "https://www.youtube.com/embed/" + videoId + "?autoplay=1";
-  } else {
-    alert("Link không hợp lệ!");
-  }
+for(let i=0;i<80;i++){
+  particles.push({
+    x:Math.random()*c.width,
+    y:Math.random()*c.height,
+    r:Math.random()*3
+  });
 }
 
-function openYT() {
-  if (currentLink) {
-    window.open(currentLink, "_blank");
-  } else {
-    alert("Chưa có link!");
-  }
+function draw(){
+  ctx.clearRect(0,0,c.width,c.height);
+
+  ctx.fillStyle="#00ffff";
+
+  particles.forEach(p=>{
+    ctx.beginPath();
+    ctx.arc(p.x,p.y,p.r,0,Math.PI*2);
+    ctx.fill();
+
+    p.y -= 1;
+
+    if(p.y < 0){
+      p.y = c.height;
+    }
+  });
+
+  requestAnimationFrame(draw);
 }
 
-function downloadMP3() {
-  document.getElementById("status").innerText =
-    "⚠️ 出現錯誤，請稍候！";
-}
-
-/* Hạt bay */
-function createParticle() {
-  let p = document.createElement("div");
-  p.className = "particle";
-  p.style.left = Math.random() * 100 + "vw";
-  p.style.animationDuration = (5 + Math.random() * 5) + "s";
-  document.body.appendChild(p);
-
-  setTimeout(() => { p.remove(); }, 10000);
-}
-
-setInterval(createParticle, 300);
+draw();
 </script>
+
+<footer>@ 2026 ©</footer>
 
 </body>
 </html>
