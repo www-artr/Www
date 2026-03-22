@@ -2,86 +2,152 @@
 <html>
 <head>
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Tải nhạc bằng code</title>
+<title>🎧 xiaohongshu Music Player</title>
 
 <style>
 body {
+  margin: 0;
   font-family: Arial;
-  background: #ffe4ec;
   text-align: center;
+  background: linear-gradient(135deg, #ffd6e0, #d6f0ff);
+  overflow: hidden;
+}
+
+h1 {
+  color: #ff4d88;
+  margin-top: 20px;
 }
 
 .container {
-  max-width: 600px;
-  margin: auto;
+  background: white;
   padding: 20px;
+  border-radius: 20px;
+  width: 90%;
+  max-width: 400px;
+  margin: auto;
+  margin-top: 20px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.1);
 }
 
 input {
+  width: 90%;
   padding: 10px;
-  width: 80%;
   border-radius: 10px;
-  border: none;
+  border: 1px solid #ccc;
 }
 
 button {
-  padding: 10px 20px;
-  border-radius: 20px;
-  border: none;
-  background: #ff6f91;
-  color: white;
   margin-top: 10px;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 10px;
+  background: #ff6fa5;
+  color: white;
   cursor: pointer;
 }
 
-.result {
-  margin-top: 20px;
+button:hover {
+  background: #ff4d88;
+}
+
+iframe {
+  margin-top: 15px;
+  width: 100%;
+  height: 220px;
+  border-radius: 15px;
+  border: none;
+}
+
+/* Thông báo */
+#status {
+  color: red;
+  margin-top: 10px;
+  font-size: 14px;
+}
+
+/* Hạt bay */
+.particle {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  background: pink;
+  border-radius: 50%;
+  opacity: 0.7;
+  animation: float 10s linear infinite;
+}
+
+@keyframes float {
+  from { transform: translateY(100vh); }
+  to { transform: translateY(-10vh); }
 }
 </style>
 </head>
 
 <body>
 
+<h1> xiaohongshu Music </h1>
+
 <div class="container">
-  <h1>🎵 Nhập code để tải nhạc</h1>
-
-  <a href="nhac.html">➡ Xem nhạc</a>
-
-  <br><br>
-
-  <input id="codeInput" placeholder="Nhập code (VD: GHtyP744)">
+  <input type="text" id="link" placeholder="Dán link YouTube vào đây...">
   <br>
-  <button onclick="findMusic()">Tải nhạc ⬇</button>
 
-  <div class="result" id="result"></div>
+  <button onclick="playMusic()">▶ 打開 </button>
+  <button onclick="openYT()">🔗 打開 YouTube </button>
+  <button onclick="downloadMP3()">⬇ 下載 MP3 </button>
+
+  <p id="status"></p>
+
+  <iframe id="player"></iframe>
 </div>
 
 <script>
-let list = JSON.parse(localStorage.getItem("musicList")) || [];
+let currentLink = "";
 
-function findMusic() {
-  let code = document.getElementById("codeInput").value;
+function playMusic() {
+  let url = document.getElementById("link").value;
+  currentLink = url;
 
-  let found = list.find(m => m.code === code);
+  let videoId = "";
 
-  if (!found) {
-    document.getElementById("result").innerHTML = "❌ Không tìm thấy nhạc";
-    return;
+  if (url.includes("watch?v=")) {
+    videoId = url.split("watch?v=")[1].split("&")[0];
+  } else if (url.includes("youtu.be/")) {
+    videoId = url.split("youtu.be/")[1];
   }
 
-  document.getElementById("result").innerHTML = `
-    🎧 Đã tìm thấy!<br>
-    <audio controls src="${found.link}"></audio><br>
-    <button onclick="download('${found.link}')">⬇ Tải</button>
-  `;
+  if (videoId !== "") {
+    document.getElementById("player").src =
+      "https://www.youtube.com/embed/" + videoId + "?autoplay=1";
+  } else {
+    alert("Link không hợp lệ!");
+  }
 }
 
-function download(link) {
-  let a = document.createElement("a");
-  a.href = link;
-  a.download = "music.mp3";
-  a.click();
+function openYT() {
+  if (currentLink) {
+    window.open(currentLink, "_blank");
+  } else {
+    alert("Chưa có link!");
+  }
 }
+
+function downloadMP3() {
+  document.getElementById("status").innerText =
+    "⚠️ 出現錯誤，請稍候！";
+}
+
+/* Hạt bay */
+function createParticle() {
+  let p = document.createElement("div");
+  p.className = "particle";
+  p.style.left = Math.random() * 100 + "vw";
+  p.style.animationDuration = (5 + Math.random() * 5) + "s";
+  document.body.appendChild(p);
+
+  setTimeout(() => { p.remove(); }, 10000);
+}
+
+setInterval(createParticle, 300);
 </script>
 
 </body>
