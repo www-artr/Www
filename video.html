@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<title>Video</title>
+
+<style>
+body{
+  background:#111;
+  color:white;
+  text-align:center;
+}
+
+video{
+  width:300px;
+  border:4px solid;
+  border-image: linear-gradient(45deg,red,orange,yellow,green,blue,purple) 1;
+}
+
+textarea{
+  width:80%;
+}
+</style>
+</head>
+
+<body>
+
+<h2>Thư viện video</h2>
+
+<video controls>
+  <source src="sample.mp4" type="video/mp4">
+</video>
+
+<p>
+<textarea>
+<video controls>
+<source src="sample.mp4">
+</video>
+</textarea>
+</p>
+
+<a href="sample.mp4" download>Tải video</a>
+
+</body>
+</html>
