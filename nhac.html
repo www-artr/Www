@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nhạc cute</title>
+
+<style>
+body {
+  font-family: Arial;
+  background: #fff0f5;
+  text-align: center;
+}
+
+.container {
+  padding: 20px;
+}
+
+.card {
+  background: white;
+  border-radius: 20px;
+  padding: 20px;
+  display: inline-block;
+  box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+  animation: fade 1s;
+}
+
+@keyframes fade {
+  from {opacity: 0;}
+  to {opacity: 1;}
+}
+
+audio {
+  width: 100%;
+  max-width: 300px;
+}
+
+a {
+  display: block;
+  margin-top: 20px;
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+  <h1>🎶 Nhạc của bạn</h1>
+
+  <div class="card">
+    <p>💖 Bài nhạc</p>
+    <audio controls>
+      <source src="your-music.mp3" type="audio/mpeg">
+    </audio>
+  </div>
+
+  <a href="index.html">⬅ Quay lại</a>
+</div>
+
+</body>
+</html>
