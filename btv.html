@@ -2,51 +2,62 @@
 <html lang="vi">
 <head>
 <meta charset="UTF-8">
-<title>Bình luận</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>評論</title>
 
 <style>
 body{
   background:#000;
   color:white;
   text-align:center;
+  padding:15px;
 }
 
 textarea{
-  width:80%;
-  height:100px;
+  width:90%;
+  height:80px;
+  border-radius:10px;
 }
 
-#comments{
-  margin-top:20px;
+button{
+  margin-top:10px;
+  padding:8px 15px;
+  border:none;
+  border-radius:10px;
+  background:#00eaff;
+}
+
+#comments div{
+  margin-top:10px;
+  padding:10px;
+  background:#111;
+  border-radius:10px;
 }
 </style>
 </head>
 
 <body>
 
-<h2>Bình luận & FDT</h2>
+<h2>💬 評論與FDT</h2>
 
-<textarea id="input"></textarea><br><br>
+<textarea id="input" placeholder="Dán code ảnh/video..."></textarea><br>
 
 <button onclick="addComment()">Gửi</button>
 
 <div id="comments"></div>
 
 <script>
-// Load bình luận
 function loadComments(){
   let data = JSON.parse(localStorage.getItem('comments') || '[]');
-  data.forEach(val => renderComment(val));
+  data.forEach(renderComment);
 }
 
-// Hiển thị
 function renderComment(val){
   let div = document.createElement('div');
   div.innerHTML = val;
   document.getElementById('comments').appendChild(div);
 }
 
-// Thêm bình luận
 function addComment(){
   let input = document.getElementById('input');
   let val = input.value;
@@ -62,11 +73,10 @@ function addComment(){
   input.value = "";
 }
 
-// chạy khi mở trang
 loadComments();
 </script>
 
-<h3>BDT - Thông báo</h3>
+<h3>📢 BDT</h3>
 <p>Trang đang cập nhật...</p>
 
 </body>
